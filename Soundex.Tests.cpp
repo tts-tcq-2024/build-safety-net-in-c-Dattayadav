@@ -26,9 +26,14 @@ void appendSoundex(std::string& soundex, char code, char& prevCode) {
 }
 
 std::string paddingSoundex(const std::string& soundex) {
-std::string paddedSoundex = soundex;
-paddedSoundex.resize(4, '0');
-return paddedSoundex;
+    std::string paddedSoundex = soundex;
+    if (paddedSoundex.length() > 4) {
+        paddedSoundex.resize(4);
+    } else {
+        paddedSoundex.resize(4, '0');
+    }
+
+    return paddedSoundex;
 }
 std::string buildSoundex(const std::string& name, char firstletter, char prevCode, std::string soundex size_t i);
 if(index >= name.length() || soundex.length() ==4) {
