@@ -1,4 +1,4 @@
-#include<ctype>
+#include<cctype>
 #include<unordered_map>
 #include<algorithm>
 
