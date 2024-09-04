@@ -1,3 +1,4 @@
+#include <string>
 #include<cctype>
 #include<unordered_map>
 #include<algorithm>
