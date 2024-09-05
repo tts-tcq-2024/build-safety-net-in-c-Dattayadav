@@ -1,52 +1,40 @@
-#include <string>
-#include<cctype>
-#include<unordered_map>
-#include<algorithm>
-
-char maptoSoundexcode(char c) {
-static const std::unordered_map<char, char> soundexMap = {
-
-{'B', '1'}, {'F', '1'}, {'P', '1'}, {'V', '1'},
-{'C', '2'}, {'G', '2'}, {'J', '2'}, {'K', '2'},
-{'Q', '2'}, {'S', '2'}, {'X', '2'}, {'Z', '2'},
-{'D', '3'}, {'T', '3'}, {'L', '4'}, {'M', '5'},
-{'N', '5'}, {'R', '6'}
-};
-
-c = toupper(c);
-auto it =soundexMap.find(c);
-return (it != soundexMap.end())? it ->second :'0';
-}
-
-void appendSoundex(std::string& soundex, char code, char& prevCode) {
-    if (code != '0' && code != prevCode) {
-        soundex += code;
-        prevCode = code;
+#ifndef SOUNDEX_H
+#define SOUNDEX_H
+ 
+#include "Soundex.h"
+#include <ctype.h>
+#include <string.h>
+ 
+char getSoundexCode(char c) {
+    c = toupper(c);
+    switch (c) {
+        case 'B': case 'F': case 'P': case 'V': return '1';
+        case 'C': case 'G': case 'J': case 'K': case 'Q': case 'S': case 'X': case 'Z': return '2';
+        case 'D': case 'T': return '3';
+        case 'L': return '4';
+        case 'M': case 'N': return '5';
+        case 'R': return '6';
+        default: return '0'; // For A, E, I, O, U, H, W, Y
     }
 }
-
-std::string paddingSoundex(const std::string& soundex) {
-    std::string paddedSoundex = soundex;
-    if (paddedSoundex.length() > 4) {
-        paddedSoundex.resize(4);
-    } else {
-        paddedSoundex.resize(4, '0');
+ 
+void generateSoundex(const char *name, char *soundex) {
+    int len = strlen(name);
+    soundex[0] = toupper(name[0]);
+    int sIndex = 1;
+ 
+    for (int i = 1; i < len && sIndex < 4; i++) {
+        char code = getSoundexCode(name[i]);
+        if (code != '0' && code != soundex[sIndex - 1]) {
+            soundex[sIndex++] = code;
+        }
     }
-
-    return paddedSoundex;
+ 
+    while (sIndex < 4) {
+        soundex[sIndex++] = '0';
+    }
+ 
+    soundex[4] = '\0';
 }
-std::string buildSoundex(const std::string& name, char firstletter, char prevCode, std::string soundex size_t i);
-if(index >= name.length() || soundex.length() ==4) {
-return paddingSoundex(soundex);
-}
-
-char code =mapToSoundexCode(name[index]);
-appendSoundex(soundex, code, prevCode);
-
-return buildSoundex(name, firstletter, prevCode, soundex, index + 1);
-}
-
-std::string generateSoundex(const std::string& name) {
-if(name.empty()) return "";
-return buildSoundex(name, toupper(name[0]), mapToSoundexcode(name[0]), std::string(1,toupper(name[0])), 1);
-}
+ 
+#endif // SOUNDEX_H
