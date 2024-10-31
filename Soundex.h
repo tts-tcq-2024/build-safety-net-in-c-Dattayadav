@@ -1,16 +1,8 @@
-#include <gtest/gtest.h>
+#ifndef SOUNDEX_H
+#define SOUNDEX_H
 
-#include "Soundex.h"
- 
-TEST(SoudexTestsuite, ReplacesConsonantsWithAppropriateDigits) {
+#include <string>
 
-//AAA
+std::string generateSoundex(const std::string& name);
 
-  char soundex[5];
-
-  generateSoundex("AX", soundex);
-
-// ASSERT_EQ(soundex,"A200");
-
-}
- 
+#endif // SOUNDEX_H
